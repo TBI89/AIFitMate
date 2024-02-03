@@ -12,6 +12,10 @@ const FoodTypeSchema = new Schema<IFoodTypeModel>({
         maxlength: [30, "Food type can't contain more then 30 characters."],
         match: [/^[A-Za-z]+$/, "Only letters are allowed in the first name."]
     }
-});
+},
+    {
+        versionKey: false
+    }
+);
 
 export const FoodTypeModel = model<IFoodTypeModel>("FoodTypeModel", FoodTypeSchema, "food-types"); // "food-types" = collection name

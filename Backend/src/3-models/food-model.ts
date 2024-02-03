@@ -1,10 +1,10 @@
 import { Document, Schema, Types, model } from "mongoose";
-import { FoodTypeModel } from "./food-type-model";
+import { FoodTypeModel, IFoodTypeModel } from "./food-type-model";
 
 
 export interface IFoodModel extends Document {
     name: string;
-    type: Types.ObjectId | IFoodModel;
+    type: Types.ObjectId | IFoodTypeModel;
     servingSizeInGrams: number;
     caloriesPerServing: number;
     proteinPerSering: number;
