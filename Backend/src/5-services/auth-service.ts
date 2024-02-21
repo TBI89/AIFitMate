@@ -10,6 +10,8 @@ async function register(user: IUserModel): Promise<string> {
         if (!/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/.test(user.password)) {
             throw new ValidationError('Password should contain at least 1 uppercase letter and 1 special character.');
         }
+        console.log(user.role);
+        
         user.password = cyber.hashedPassword(user.password);
         const registeredUser = await UserModel.create(user);
         console.log(user);
