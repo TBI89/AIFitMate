@@ -1,4 +1,6 @@
+import { error } from "console";
 import { Document, Schema, model } from "mongoose";
+import { ValidationError } from "./client-errors";
 
 export interface IUserModel extends Document {
     firstName: string;
