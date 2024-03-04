@@ -1,6 +1,4 @@
-import { error } from "console";
 import { Document, Schema, model } from "mongoose";
-import { ValidationError } from "./client-errors";
 
 export interface IUserModel extends Document {
     firstName: string;
@@ -31,15 +29,28 @@ export const UserSchema = new Schema<IUserModel>({
     email: {
         type: String,
         required: [true, "Please enter your email address."],
-        unique: true, // Ensure email is unique.
-        lowercase: true, // Convert email to lowercase.
-        match: [
-            /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-            "Please enter a valid email address."
+        lowercase: true,
+        unique: true,
+        validate: [
+            {
+                validator: (value: string) =>
+                    /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value),
+                message: "Please enter a valid email address.",
+            },
+            {
+                validator: async function (value: string) {
+                    const user = await this.constructor.findOne({ email: value });
+                    if (user) {
+                        return false; // Not unique
+                    }
+                    return true; // Unique
+                },
+                message: "Email address must be unique.",
+            },
         ],
     },
     password: {
-        type: String
+        type: String // Password custom validation is in the auth-service.
     },
     role: {
         type: Number,
